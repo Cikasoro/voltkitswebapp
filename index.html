@@ -1,0 +1,185 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Homepage
+{% endblock %}
+{% block main %}
+
+ <section class=" vh-100 d-flex align-items-center">
+  <div id="heroCarousel" class="carousel slide w-100 h-100" data-bs-ride="carousel">
+
+    <div class="carousel-inner h-100">
+
+      <div class="carousel-item active h-100">
+        <div class="d-block w-100 h-100 hero-slide-1"></div>
+      </div>
+
+      <div class="carousel-item h-100">
+        <div class="d-block w-100 h-100 hero-slide-2"></div>
+      </div>
+
+      <div class="carousel-item h-100">
+        <div class="d-block w-100 h-100 hero-slide-3"></div>
+      </div>
+
+    </div>
+
+    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center h-100 animate-caption">
+      <h1 class="hero-title display-1 fw-bold text-white">KIT YOUR DREAMS</h1>
+      <p class="hero-subtitle lead text-white-50">Pride . Prestige . Passion </p>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+
+  </div>
+</section>
+
+    <section class=" container mt-5 trending-section">
+        <div class="section-header">
+          <h2>Trending Now</h2>
+          <div class="scroll-nav-buttons">
+            <button id="slideLeft" aria-label="Scroll Left">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <button id="slideRight" aria-label="Scroll Right">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-scroll-container" id="trendingContainer">
+          {% for product in trending %}
+          <div class="product-card">
+            <div class="card-image-wrapper">
+              <a href="/product/{{ product.id }}">
+                <img src="{{ url_for('static', filename='products/' ~ product.first_image) }}" alt="{{ product.name }}">
+              </a>
+              <div class="price-tag">₦{{ product.price }}</div>
+            </div>
+
+            <div class="card-details">
+              <span class="product-name">{{ product.name }}</span>
+              <span class="product-category">{{ product.category_name }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+
+
+      </section>
+      <section class="container category-section">
+        <div class="cat-header">
+          <h2>Who are you shopping for?</h2>
+          <a href="/shop" class="cat-view-all">View All <span>&rarr;</span></a>
+        </div>
+
+        <div class="category-container">
+
+          <a href="/shop?main=men" class="category-card">
+            <div class="cat-image-wrapper">
+              <img src="{{ url_for('static', filename='products/Men.jfif') }}" alt="">
+
+            </div>
+            <div class="cat-label">Men</div>
+          </a>
+
+          <a href="/shop?main=women" class="category-card">
+            <div class="cat-image-wrapper">
+              <img src="{{ url_for('static', filename='products/Women.jfif') }}" alt="">
+            </div>
+            <div class="cat-label">Women</div>
+          </a>
+
+          <a href="/shop?main=kids" class="category-card">
+            <div class="cat-image-wrapper">
+              <img src="{{ url_for('static', filename='products/Kids.jfif') }}" alt="">
+            </div>
+            <div class="cat-label">Kids</div>
+          </a>
+
+          <a href="/sports" class="category-card mobile-only">
+            <div class="cat-image-wrapper">
+              <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/c2012ea32a5b45998219af7a009a1932_9366/Tiro_League_Ball_White_HS9744_01_standard.jpg" alt="Sports Accessories">
+            </div>
+            <div class="cat-label">Sports</div>
+          </a>
+
+        </div>
+      </section>
+
+
+        <section class=" container trending-section">
+        <div class="section-header">
+          <h2>Calling out all football fans</h2>
+          <div class="scroll-nav-buttons">
+            <button id="slideLeft" aria-label="Scroll Left">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <button id="slideRight" aria-label="Scroll Right">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-scroll-container" id="trendingContainer">
+          {% for product in trending %}
+          <div class="product-card">
+            <div class="card-image-wrapper">
+              <a href="/product/{{ product.id }}">
+                <img src="{{ url_for('static', filename='products/' ~ product.first_image) }}" alt="{{ product.name }}">
+              </a>
+              <div class="price-tag">₦{{ product.price }}</div>
+            </div>
+
+            <div class="card-details">
+              <span class="product-name">{{ product.name }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+
+
+
+
+
+<script>
+  // Select the elements
+  const container = document.getElementById('trendingContainer');
+  const leftBtn = document.getElementById('slideLeft');
+  const rightBtn = document.getElementById('slideRight');
+
+  // Calculate how far to scroll (width of one card + gap)
+  // We assume a desktop card width of 280px + 15px gap ~ 300px
+  const scrollAmount = 300;
+
+  // Event Listener for Right Button
+  rightBtn.addEventListener('click', () => {
+    container.scrollLeft += scrollAmount;
+  });
+
+  // Event Listener for Left Button
+  leftBtn.addEventListener('click', () => {
+    container.scrollLeft -= scrollAmount;
+  });
+</script>
+
+
+
+{% endblock %}

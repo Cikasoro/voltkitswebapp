@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Products
+{% endblock %}
+{% block main %}
+{% if main_category.name|lower == "teamwears" %}
+<div class="container-fluid px-0 ">
+
+    <!-- HERO SECTION -->
+    <div class="position-relative">
+        <img src="{{ url_for('static', filename='mock/teamwears_hero.jpg') }}"
+             class="img-fluid w-100"
+             style="object-fit: cover; height: 60vh;"
+             alt="">
+
+        <!-- Overlay -->
+        <div class="position-absolute top-50 start-50 translate-middle text-center text-white px-3"
+             style="text-shadow: 0 0 10px rgba(0,0,0,0.7);">
+            <img src="{{ url_for('static', filename='mock/club_logo.png') }}"
+                 alt="Club Logo"
+                 style="height: 60px;"
+                 class="mb-2">
+            <h1 class="fw-bold display-6">{{ subcategory.name }}</h1>
+            <p class="fs-5 mb-0">Official Partners since 2020</p>
+        </div>
+    </div>
+
+</div>
+
+
+    <!-- PRODUCT GRID SECTION -->
+    <div class="container my-5">
+        <h3 class="fw-semibold mb-4 text-center"></h3>
+        <div class="row g-3">
+          {% if product %}
+            {% for product in products %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="/product/{{ product.id }}" class="text-decoration-none text-dark">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-image-wrapper position-relative rounded-3">
+                            <img src="{{ url_for('static', filename='products/' + product.image_paths[0]) }}"
+                                 class="img-fluid rounded-3"
+                                 style="height: 180px; object-fit: cover;"
+                                 alt="{{ product.name }}">
+                        </div>
+                        <div class="card-body p-2">
+                            <h6 class="card-title mb-1 small fw-semibold text-muted">{{ product.name }}</h6>
+                            <p class="card-text mb-0 fw-bold">₦{{ product.price }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h3 class="text-secondary mb-4 text-center">Products not available</h3>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- PARTNERSHIP VALUE SECTION -->
+    <div class="container my-5 py-5 bg-light rounded-3">
+        <h3 class="fw-semibold text-center mb-4">More Than Merchandise — A Strategic Partnership</h3>
+        <p class="text-center text-muted mb-5">
+            The Voltkits Teamwear partnership empowers clubs to grow beyond the pitch.
+        </p>
+
+        <div class="row text-center g-4">
+            <div class="col-md-4">
+                <div class="p-3 h-100 border rounded-3 bg-white shadow-sm">
+                    <h5 class="fw-bold mb-2">Monetize Official Merchandise</h5>
+                    <p class="text-muted small">
+                        Generate sustainable revenue through premium, officially branded kits.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 h-100 border rounded-3 bg-white shadow-sm">
+                    <h5 class="fw-bold mb-2">Expand Fan Engagement</h5>
+                    <p class="text-muted small">
+                        Strengthen fan loyalty with high-quality, authentic teamwear.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 h-100 border rounded-3 bg-white shadow-sm">
+                    <h5 class="fw-bold mb-2">Maintain Brand Consistency</h5>
+                    <p class="text-muted small">
+                        Ensure visual identity consistency across match, training, and fan apparel.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% else %}
+<div class="container">
+  <div class="container mt-4"></div>
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" >
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">{{ main_category.name }}</li>
+      <li class="breadcrumb-item">{{ category.name }}</li>
+    </ol>
+  </nav>
+
+  <!-- Page Title (subcategory name) -->
+  <h2 class="mb-4">{{ subcategory.name }}</h2>
+  <div class="container mt-4">
+  <div class="row g-3">
+    {% for product in products %}
+        <div class="col-6 col-md-3">
+            <a href="/product/{{ product.id }}" class="text-decoration-none text-dark">
+                <div class="card border-0">
+                    <div class="card-image-wrapper rounded-3">
+                        <img src="{{ url_for('static', filename='products/' + product.image_paths[0]) }}" class="img-fluid rounded-3 .product-img" alt="{{ product.name }}">
+                    </div>
+                    <div class="card-body p-2">
+                        <h6 class="card-title mb-1 small fw-semibold text-muted">{{ product.name }}</h6>
+                        <p class="card-text mb-0 fw-bold">₦{{ product.price }}</p>
+                    </div>
+                </div>
+            </a>
+          </div>
+        {% endfor %}
+  </div>
+</div>
+
+
+
+{% endif %}
+
+{% endblock %}

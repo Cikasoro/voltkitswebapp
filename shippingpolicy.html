@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block main %}
+
+<div class="container ">
+  <a href="{{ url_for('index') }}" class="back-btn">
+    <img src="{{ url_for('static', filename='icons/back.svg') }}" alt="Back" class="back-icon">
+    <span>Home</span>
+  </a>
+
+</div>
+
+
+{% endblock %}

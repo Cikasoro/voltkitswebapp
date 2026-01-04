@@ -1,0 +1,340 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="container my-5">
+
+    <div class="row g-5 g-md-5 g-lg-5">
+       <div class="col-lg-6 product-image-column">
+        <div class=" position-relative mb-4 border rounded-3  main-image-wrapper">
+            <img id="mainProductImage"
+                src="{{ url_for('static', filename='products/' + product.image_paths[0]) }}"
+                class="rounded-3 product-detail-main-img"
+                alt="{{ product.name }}">
+                <!-- Spinner overlay, hidden by default -->
+            <div id="imageSpinner" class="position-absolute top-50 start-50 translate-middle d-none">
+                <div class="spinner-border text-info" role="status" style="width: 2rem; height: 2rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex thumbnail-gallery justify-content-center">
+        {% for img in product.image_paths[:4] %}
+        <img src="{{ url_for('static', filename='products/' + img) }}"
+             class="thumb-image  rounded-3 border border-dark-subtle"
+             style="height: 120px; cursor:pointer; object-fit: cover;"
+             >
+        {% endfor %}
+    </div>
+</div>
+
+        <div class="col-lg-5 ms-lg-4">
+
+            <p class="text-secondary small mb-0">{{ product.subcategory_name }}</p>
+
+            <h2 class="fw-bold fs-2 mt-0 mb-2">{{ product.name }}</h2>
+
+            <div class="d-flex align-items-center mb-3 justify-content-between">
+                <h4 class="text-dark me-3 mb-0 fs-3 fw-bold">₦{{ product.price }}</h4>
+                <span class="badge bg-light text-dark border rounded-pill py-1 px-2">
+                    <span class="text-warning">★</span> 4.5
+                </span>
+            </div>
+
+            <hr class="product-divider my-3">
+
+            <div class="mb-4">
+                <h5 class="fw-semibold fs-6 mb-2">Description:</h5>
+                <p class="text-muted small description-text">
+                    {{ product.description }}
+                </p>
+            </div>
+
+            <hr class="product-divider my-3">
+
+            <form id="productForm" method="POST" action="{{ url_for('cart') }}">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <input type="hidden" name="size" id="sizeInput">
+                <input type="hidden" name="quantity" id="qtyHidden">
+
+                {% if category['name']|lower == 'clothing' %}
+                <div class="mb-4">
+                    <span class="me-3 fw-semibold small  ">Size:</span>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        {% for s in ['S','M','L','XL','XXL'] %}
+                        <button type="button"
+                                class="size-btn btn btn-sm btn-outline-secondary rounded-pill"
+                                data-size="{{ s }}">{{ s }}</button>
+                        {% endfor %}
+                    </div>
+                    <div id="sizeError" class="text-danger small mt-2" style="display:none;">
+                        Please select a size.
+                    </div>
+                </div>
+                {% else %}
+                <div class="mb-4">
+                    <span class="me-3 fw-semibold small  ">Size:</span>
+                </div>
+                {% endif %}
+
+                <hr class="product-divider my-3">
+
+                <div class="mb-4">
+                    <span class="me-3 fw-semibold small ">Quantity:</span>
+                    <div class="input-group input-group-sm mt-2" style="max-width:130px;">
+                        <button type="button" class="btn btn-outline-secondary border-end-0" id="qtyMinus">-</button>
+                        <input type="number" id="qtyInput" class="form-control text-center border-start-0 border-end-0" value="1" min="1" readonly style="width: 40px;">
+                        <button type="button" class="btn btn-outline-secondary border-start-0" id="qtyPlus">+</button>
+                    </div>
+                </div>
+
+
+                <div class="d-grid gap-3 mt-3">
+                    <button type="submit"  id="addToCartBtn" class="btn btn-dark  fw-bold py-2">
+                        <span class="btn-text">Add To Cart</span>
+                        <span class="spinner-border spinner-border-sm d-none"
+                            role="status"
+                            aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-outline-dark  py-2">
+                        Add to Wishlist
+                    </button>
+                </div>
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                    <div id="cartToast" class="toast text-bg-success border-0" role="alert">
+                        <div class="d-flex">
+                            <div id="cartToastBody" class="toast-body"></div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                         </div>
+                    </div>
+                </div>
+
+            </form>
+            <div id="cartMessage" class="mt-3"></div>
+        </div>
+    </div>
+
+<h4 class="mt-5 mb-3 fw-bold fs-5">Ratings & Reviews</h4>   <!-- Ratings & Reviews Section (Mockup) -->
+<div class="row mt-4 ratings-reviews-section">
+    <!-- Left Column: Primary Rating -->
+    <div class="col-md-3 d-flex flex-column align-items-start">
+        <span class="fs-3 fw-bold">4.5</span>
+        <div class="text-warning mb-1">
+            ★★★★★
+        </div>
+        <small class="text-muted">Based on 12 reviews</small>
+        <small class="text-muted">Verified purchases</small>
+    </div>
+
+    <!-- Right Column: Review Cards -->
+    <div class="col-md-9">
+        <!-- Header: Number of reviews + Sort (mockup) -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-semibold">(12)</span>
+            <select class="form-select form-select-sm w-auto">
+                <option selected>Most Recent</option>
+                <option >Most Helpful</option>
+            </select>
+        </div>
+
+        <!-- Review Cards Scroll Container -->
+        <div class="d-flex overflow-auto gap-2 pb-2">
+            {% for i in range(8) %} <!-- mockup 8 review cards -->
+            <div class="card p-2" style="min-width: 180px; flex: 0 0 auto;">
+                <div class="text-warning mb-1">★★★★★</div>
+                <div class="fw-bold small">John D.</div>
+                <div class="text-muted small">“Great quality, fast delivery.”</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+    <h4 class="mt-5 mb-3 fw-bold fs-5">You may also like</h4>
+    <div class="row g-4">
+        {% for rp in related_products %}
+        <div class="col-6 col-md-3">
+            <a href="{{ url_for('product_details', product_id=rp.id) }}" class="text-decoration-none text-dark">
+                <div class="card border-0">
+                    <div class="card-image-wrapper rounded-3">
+                        <img src="{{ url_for('static', filename='products/' + rp.first_image) }}" class="img-fluid .product-img rounded-3" alt="{{ rp.name }}">
+                    </div>
+                    <div class="card-body p-2">
+                        <h6 class="card-title mb-1 small fw-semibold text-muted">{{ rp.name }}</h6>
+                        <p class="card-text mb-0 fw-bold">₦{{ rp.price }}</p>
+                    </div>
+                </div>
+            </a>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const mainImage = document.getElementById('mainProductImage');
+    const spinner = document.getElementById('imageSpinner');
+    const thumbnails = document.querySelectorAll('.thumb-image');
+
+    thumbnails.forEach(thumb => {
+        thumb.addEventListener('click', function () {
+            // 1. Update Highlight: Remove highlight from all, add to clicked
+            thumbnails.forEach(t => {
+                t.classList.remove('border-info', 'border-2');
+                t.classList.add('border-dark-subtle'); // Reset to original state
+            });
+            this.classList.add('border-info', 'border-2');
+            this.classList.remove('border-dark-subtle');
+
+            mainImage.classList.add('loading');
+
+            // 2. Start Spinner: Remove 'd-none' to show it
+            spinner.classList.remove('d-none');
+
+            // 3. Change Source: Trigger the new image download
+            mainImage.src = this.src;
+
+            // 4. End Spinner: Hide only once the image is fully downloaded
+            mainImage.onload = function () {
+                mainImage.classList.remove('loading');
+                spinner.classList.add('d-none');
+            };
+
+            // Optional: Handle errors so the spinner doesn't spin forever if image fails
+            mainImage.onerror = function () {
+                mainImage.classList.remove('loading');
+                spinner.classList.add('d-none');
+                console.error("Failed to load image: " + this.src);
+            };
+        });
+    });
+});
+
+</script>
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const form = document.getElementById('productForm');
+    const qtyInput = document.getElementById('qtyInput');
+    const qtyHidden = document.getElementById('qtyHidden');
+    const sizeInput = document.getElementById('sizeInput');
+
+    const sizeButtons = document.querySelectorAll('.size-btn');
+    const sizeError = document.getElementById('sizeError');
+
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    const btnText = addToCartBtn.querySelector('.btn-text');
+    const btnSpinner = addToCartBtn.querySelector('.spinner-border');
+
+    const cartBadge = document.getElementById('cart-badge');
+
+    // Toast setup
+    const cartToastEl = document.getElementById('cartToast');
+    const cartToastBody = document.getElementById('cartToastBody');
+    const cartToast = new bootstrap.Toast(cartToastEl, { delay: 3000 });
+
+    let selectedSize = null;
+
+    // -----------------------------
+    // Size selection
+    // -----------------------------
+    sizeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            sizeButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedSize = btn.dataset.size.trim();
+            sizeError.style.display = 'none';
+        });
+    });
+
+    // -----------------------------
+    // Quantity controls
+    // -----------------------------
+    document.getElementById('qtyMinus').addEventListener('click', () => {
+        let qty = parseInt(qtyInput.value) || 1;
+        if (qty > 1) qtyInput.value = qty - 1;
+    });
+
+    document.getElementById('qtyPlus').addEventListener('click', () => {
+        let qty = parseInt(qtyInput.value) || 1;
+        qtyInput.value = qty + 1;
+    });
+
+    // -----------------------------
+    // AJAX form submit
+    // -----------------------------
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const sizeRequired = sizeButtons.length > 0;
+        if (sizeRequired && !selectedSize) {
+            sizeError.style.display = 'block';
+            return;
+        }
+
+        sizeInput.value = selectedSize || "";
+        qtyHidden.value = parseInt(qtyInput.value) || 1;
+
+        // Button loading state
+        addToCartBtn.disabled = true;
+        btnText.classList.add('d-none');
+        btnSpinner.classList.remove('d-none');
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+       .then(data => {
+    if (data.success) {
+        if (typeof data.cart_count !== 'undefined') {
+            if (window.CartState) {
+                CartState.setCount(data.cart_count);
+            } else {
+                // fallback (edge cases)
+                document.querySelectorAll('.cart-badge').forEach(badge => {
+                    badge.textContent = data.cart_count;
+                    badge.classList.remove('d-none');
+                });
+            }
+        }
+
+        cartToastBody.textContent = data.message;
+        cartToast.show();
+    } else {
+        cartToastBody.textContent = data.message || 'Unable to add item.';
+        cartToast.show();
+    }
+})
+
+
+
+        .catch(() => {
+            cartToastBody.textContent = 'Something went wrong. Please try again.';
+            cartToast.show();
+        })
+        .finally(() => {
+            // Reset button state
+            addToCartBtn.disabled = false;
+            btnSpinner.classList.add('d-none');
+            btnText.classList.remove('d-none');
+        });
+    });
+
+});
+</script>
+
+
+
+
+{% endblock %}

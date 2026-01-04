@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volt - Payment Failed</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .error-icon { font-size: 80px; color: #dc3545; }
+        .failure-card { border-top: 5px solid #dc3545; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <div class="mb-4">
+                    <span class="error-icon">✕</span>
+                    <h1 class="display-5 fw-bold">Payment Failed</h1>
+                    <p class="lead text-muted">We couldn't process your transaction at this time.</p>
+                </div>
+
+                <div class="card shadow-sm failure-card text-start">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3 fw-bold">What happened?</h5>
+                        <p class="text-muted small">Your payment might have failed due to:</p>
+                        <ul class="text-muted small">
+                            <li>Incorrect card details (CVV or Expiry date).</li>
+                            <li>Insufficient funds in your account.</li>
+                            <li>Your bank declined the transaction for security.</li>
+                            <li>Temporary connection issues with Flutterwave.</li>
+                        </ul>
+
+                        <div class="alert alert-warning py-2 small border-0">
+                            <strong>Note:</strong> If you were debited, don't worry. Flutterwave usually processes refunds automatically within 24-48 hours.
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a href="/checkout" class="btn btn-danger btn-lg">Try Again</a>
+                            <a href="/" class="btn btn-outline-secondary">Return Home</a>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="mt-4 text-muted small">Need help? Contact us at <strong>support@voltkits.com</strong></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

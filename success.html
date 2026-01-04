@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Volt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .success-check { font-size: 80px; color: #198754; }
+        .receipt-card { border-top: 5px solid #198754; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <div class="mb-4">
+                    <span class="success-check">✔</span>
+                    <h1 class="display-5 fw-bold">Payment Success!</h1>
+                    <p class="lead text-muted">Thank you for your purchase. Your order is being processed.</p>
+                </div>
+
+                <div class="card shadow-sm receipt-card text-start">
+                    <div class="card-body p-4">
+                        <h5 class="mb-4 text-uppercase fw-bold">Order Summary</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Order Number:</span>
+                            <span class="fw-bold">#{{ order.order_number }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Date:</span>
+                            <span>{{ order.created_at }}</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="h5">Total Paid:</span>
+                            <span class="h5 fw-bold">NGN {{ "{:,.2f}".format(order.subtotal) }}</span>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a href="/" class="btn btn-primary btn-lg">Continue Shopping</a>
+                            <button onclick="window.print()" class="btn btn-outline-secondary">Print Receipt</button>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="mt-4 text-muted small">A confirmation email has been sent to <strong>{{ order.email }}</strong></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

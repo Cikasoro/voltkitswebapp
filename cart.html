@@ -1,0 +1,854 @@
+{% extends "layout.html" %}
+{% block main %}
+
+  <div class="container my-4">
+  <h2>Cart</h2>
+  {% if cart_items %}
+  <div class="list-group">
+    {% for item in cart_items %}
+    <div class="list-group-item d-flex align-items-center justify-content-between">
+      <img src="{{ url_for('static', filename='products/' + item.image) }}" style="height:80px; width:80px; object-fit:cover;">
+      <div class="flex-grow-1 ms-3">
+        <h6>{{ item.name }} ({{ item.size }})</h6>
+        <p>₦{{ item.price }}</p>
+      </div>
+      <div class="d-flex align-items-center gap-1">
+        <button class="btn btn-outline-dark btn-sm qty-btn" data-action="decrement" data-id="{{ item.product_id }}" data-size="{{ item.size }}">-</button>
+        <input type="text" class="form-control text-center qty-input" value="{{ item.quantity }}" style="width:50px;" readonly>
+        <button class="btn btn-outline-dark btn-sm qty-btn" data-action="increment" data-id="{{ item.product_id }}" data-size="{{ item.size }}">+</button>
+        <button class="btn btn-danger btn-sm remove-btn" data-id="{{ item.product_id }}" data-size="{{ item.size }}">Remove</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="mt-3 text-end">
+    <h5>Total: ₦<span id="cartTotal">{{ total }}</span></h5>
+  </div>
+  <div class="mt-2 text-end">
+    <button type="button"  class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+    Checkout
+    </button>
+  </div>
+  {% else %}
+  <p>Your cart is empty.</p>
+  {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const qtyButtons = document.querySelectorAll('.qty-btn');
+    const removeButtons = document.querySelectorAll('.remove-btn');
+
+    function updateCart(product_id, size, action, btn) {
+        fetch("/cart/update", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `product_id=${product_id}&size=${size}&action=${action}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) return;
+
+            const itemRow = btn.closest('.list-group-item');
+
+            if (action === "remove") {
+                itemRow?.remove();
+            } else {
+                const qtyInput = itemRow?.querySelector('.qty-input');
+                if (qtyInput) qtyInput.value = data.quantity;
+            }
+
+            // Update totals
+            const cartTotal = document.getElementById('cartTotal');
+            if (cartTotal) cartTotal.innerText = data.total;
+
+            // ✅ CENTRALIZED CART BADGE UPDATE
+            if (typeof data.cart_count !== 'undefined') {
+                if (window.CartState) {
+                    CartState.setCount(data.cart_count);
+                } else {
+                    // fallback (should rarely happen)
+                    document.querySelectorAll('.cart-badge').forEach(badge => {
+                        badge.textContent = data.cart_count;
+                        badge.classList.remove('d-none');
+                    });
+                }
+            }
+        })
+        .catch(() => {
+            console.error('Cart update failed');
+        });
+    }
+
+    qtyButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            updateCart(
+                btn.dataset.id,
+                btn.dataset.size,
+                btn.dataset.action,
+                btn
+            );
+        });
+    });
+
+    removeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            updateCart(
+                btn.dataset.id,
+                btn.dataset.size,
+                "remove",
+                btn
+            );
+        });
+    });
+});
+
+
+
+</script>
+
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable align-items-end modal-xl">
+<div class="modal-content  rounded-top">
+
+
+<!-- Header -->
+<div class="modal-header border-bottom">
+<h5 class="modal-title fw-semibold">Checkout</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+
+<!-- Body -->
+<div class="modal-body p-0 overflow-hidden">
+<!-- SLIDER CONTAINER -->
+<div class="checkout-slider d-flex" style="width:100%; transition: transform 0.4s ease;">
+
+
+<!-- SLIDES INSERTED HERE -->
+<div class="checkout-slide w-100 px-4 py-4">
+<div class="container" style="max-width: 420px;">
+<button id="continueGuestBtn" class="btn btn-dark w-100 mb-3">Continue as Guest</button>
+<div class="text-center text-muted py-3">OR</div>
+<div class="mb-3">
+<label class="form-label">Sign in / Sign up</label>
+<input type="email" id="checkoutEmail" name="email" class="form-control" placeholder="Please enter your email address">
+</div>
+<div class="error-msg text-danger small d-none"></div>
+<button  id="continueEmailBtn" class="btn btn-primary w-100">Continue</button>
+<div class="d-flex align-items-start gap-1 justify-content-center  mt-4 text-muted small">
+<span class="trust-icon">
+  <img src="/static/icons/lock.svg" alt="Secure" width="16" height="16">
+</span>
+<span class="text-center text-success">
+    All data are secured and used only for order.
+</span>
+</div>
+</div>
+</div>
+
+<div class="checkout-slide w-100 px-4 py-4">
+<div class="container" style="max-width: 420px;">
+<!-- EXISTING USER -->
+<div class="mb-4 existing-user d-none">
+<label class="form-label">Password</label>
+<input type="password" class="form-control">
+</div>
+<button id="authContinueBtn" class="btn btn-primary w-100 mb-2 d-none existing-user">Continue</button>
+<button id="authBackBtn" class="existing-user d-none">Back</button>
+<div class="text-center existing-user d-none">
+<a href="#" class="small">Forgot password?</a>
+</div>
+ <!-- NEW USER -->
+<div class="mb-4 new-user d-none">
+  <label class="form-label">First name</label>
+  <input type="text" class="form-control" placeholder="First name">
+</div>
+
+<div class="mb-4 new-user d-none">
+  <label class="form-label">Last name</label>
+  <input type="text" class="form-control" placeholder="Last name">
+</div>
+
+<div class="mb-4 new-user d-none">
+  <label class="form-label">Email address</label>
+  <input type="email"
+         class="form-control"
+         value="{{ user_email }}"
+         readonly>
+</div>
+
+<div class="mb-4 new-user d-none">
+  <label class="form-label">Password</label>
+  <input type="password" class="form-control" placeholder="Create a password">
+</div>
+
+<button id="registerContinueBtn" class="btn btn-primary w-100 mb-2 new-user d-none">
+  Continue
+</button>
+
+<button id="registerBackBtn" class="new-user d-none">
+  Back
+</button>
+</div>
+</div>
+
+
+
+<div class="checkout-slide w-100 px-4 py-4">
+  <div class="container" style="max-width: 640px;">
+
+    <h6 class="fw-semibold mb-1">Contact Information</h6>
+    <p class="text-muted small mb-3">
+      Please ensure your details are accurate so we can contact you and deliver your order without delays.
+    </p>
+
+    <div class="row g-3 mb-4">
+
+      <!-- Full Name -->
+      <div class="col-12">
+        <label class="form-label">
+          Full name
+          <span class="text-danger small d-none error-msg">Required</span>
+        </label>
+        <input type="text" name="c_fullname" class="form-control">
+      </div>
+
+      <!-- Email -->
+      <div class="col-12">
+        <label class="form-label">
+          Email
+          <span class="text-warning small">(order confirmation and receipt will be sent to this email)</span>
+          <span class="text-danger small d-none error-msg">Invalid email</span>
+        </label>
+        <input type="email" name="c_email" class="form-control">
+      </div>
+
+      <!-- Phone -->
+      <div class="col-12">
+        <label class="form-label">
+          Phone number
+          <span class="text-muted small"></span>
+          <span class="text-danger small d-none error-msg">Invalid number</span>
+        </label>
+        <input type="tel" name="c_phone" class="form-control">
+      </div>
+
+    </div>
+
+    <h6 class="fw-semibold mb-2">Fulfillment Method
+       <span id="fulfillmentError" class="text-danger small d-none mb-3">
+      Please select a method.
+      </span>
+    </h6>
+
+
+    <div class="form-check mb-2">
+      <input id="pickupOption" class="form-check-input" type="radio" name="fulfillment" value="pickup">
+      <label class="form-check-label" for="pickupOption">
+        Pickup
+        <span id="pickupHelp" class="text-muted small d-none ms-2">
+          Pickup details will be shared after confirmation.
+        </span>
+      </label>
+    </div>
+
+    <div class="form-check mb-4">
+      <input id="deliveryOption" class="form-check-input" type="radio" name="fulfillment" value="delivery">
+      <label class="form-check-label" for="deliveryOption">
+        Delivery
+        <span id="deliveryHelp" class="text-muted small d-none ms-2">
+          You’ll be asked for a delivery address next.
+        </span>
+      </label>
+    </div>
+
+
+    <div class="d-flex justify-content-between align-items-center">
+      <button id="contactBackBtn" class="btn btn-light">Back</button>
+
+      <button id="contactContinueBtn" type="button" class="btn btn-primary mb-1">
+        Continue
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="checkout-slide w-100 px-4 py-4">
+<div class="container" style="max-width: 640px;">
+<h6 class="fw-semibold mb-3">Shipping Address</h6>
+<div class="row g-3 mb-4">
+<div class="col-12">
+<label class="form-label">Address</label>
+<input type="text" class="form-control">
+</div>
+<div class="col-md-6">
+<label class="form-label">City</label>
+<input type="text" class="form-control">
+</div>
+<div class="col-md-6">
+<label class="form-label">State</label>
+<input type="text" class="form-control">
+</div>
+<div class="col-12">
+<label class="form-label">Landmark (optional)</label>
+<input type="text" class="form-control">
+</div>
+</div>
+<div class="alert alert-warning small">
+Delivery fees are not included. Shipping cost will be communicated and paid separately during waybill processing.
+</div>
+<div class="d-flex justify-content-between">
+<button id="shippingBackBtn" class="btn btn-light">Back</button>
+<button id="shippingContinueBtn" class="btn btn-primary">Continue</button>
+</div>
+</div>
+</div>
+
+<div class="checkout-slide w-100 px-4 py-4">
+<div class="container">
+<div class="row g-4">
+<!-- Items -->
+<div class="col-lg-8">
+<h6 class="fw-semibold mb-3">Order Summary</h6>
+<!-- Cart items loop here -->
+<div id="summaryItems">
+
+</div>
+</div>
+<!-- Summary -->
+<div class="col-lg-4">
+  <div class="border rounded-3 p-3 shadow-sm">
+    <div class="d-flex justify-content-between mb-2">
+      <span>Total</span>
+      <strong id="summarySubtotal">₦0</strong>
+    </div>
+
+    <div class="small text-muted mb-2" id="summaryFulfillment">
+      Fulfillment: -
+    </div>
+
+    <div class="border-top pt-3">
+      <button id="placeOrderBtn" class="btn btn-primary w-100">Place Order</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<script>
+/* ---------- helpers & state ---------- */
+let checkoutState = null;
+const STEP_INDEX = { identity: 0, auth: 1, contact: 2, shipping: 3, summary: 4 };
+
+function initCheckoutState(isAuthenticated = false, userEmail = null) {
+  checkoutState = {
+    currentSlide: isAuthenticated ? STEP_INDEX.contact : STEP_INDEX.identity,
+    mode: isAuthenticated ? 'authenticated' : null,
+    email: userEmail,
+    authenticated: isAuthenticated,
+
+
+    emailExists: null,   // unknown until backend responds
+    authVariant: null,   // 'existing' | 'new'
+
+    contact: {},
+    fulfillment: null,
+    shippingAddress: null
+  };
+}
+
+
+
+const slider = document.querySelector('.checkout-slider');
+function goToSlideIndex(index) {
+  if (!slider)return;
+
+  slider.style.transform = `translateX(-${index * 100}%)`;
+  checkoutState.currentSlide = index;
+
+  if (Number(index) === 4) {
+    loadSummarySlide();
+  }
+}
+
+/* Map backend step string to index and move */
+function moveToStep(stepName) {
+  const idx = STEP_INDEX[stepName];
+  if (typeof idx === 'number') goToSlideIndex(idx);
+  else console.warn('Unknown step from backend:', stepName);
+}
+
+
+function updateAuthUI() {
+  if (checkoutState.emailExists === true) {
+    document.querySelectorAll('.existing-user')
+      .forEach(el => el.classList.remove('d-none'));
+
+    document.querySelectorAll('.new-user')
+      .forEach(el => el.classList.add('d-none'));
+  } else {
+    document.querySelectorAll('.new-user')
+      .forEach(el => el.classList.remove('d-none'));
+
+    document.querySelectorAll('.existing-user')
+      .forEach(el => el.classList.add('d-none'));
+  }
+}
+
+
+
+function loadSummarySlide() {
+  fetch('/checkout/summary', {
+    credentials: 'same-origin'
+  })
+    .then(async res => {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to load summary');
+      return data;
+    })
+    .then(data => {
+      document.getElementById('summarySubtotal').textContent =
+        `₦${Number(data.order.subtotal).toLocaleString()}`;
+
+      document.getElementById('summaryFulfillment').textContent =
+        `Fulfillment: ${data.order.fulfillment || '-'}`;
+
+      const itemsContainer = document.getElementById('summaryItems');
+      itemsContainer.innerHTML = '';
+
+      data.items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'border-bottom py-2 d-flex justify-content-between';
+        div.innerHTML = `
+          <div>${item.product_name} × ${item.quantity}</div>
+          <div>₦${Number(item.unit_price * item.quantity).toLocaleString()}</div>
+        `;
+        itemsContainer.appendChild(div);
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      showToast(err.message);
+    });
+}
+
+
+
+
+/* Show toast helper (use your existing toast system) */
+function showToast(msg) {
+  console.warn('TOAST:', msg);
+}
+
+/* ---------- modal lifecycle and binding ---------- */
+const checkoutModalEl = document.getElementById('checkoutModal');
+if (checkoutModalEl) {
+  checkoutModalEl.addEventListener('shown.bs.modal', () => {
+    const isAuthenticated = document.body.dataset.auth === 'true';
+    const email = document.body.dataset.email || null;
+    initCheckoutState(isAuthenticated, email);
+    goToSlideIndex(checkoutState.currentSlide);
+
+    // Bind buttons now that modal is in DOM (safe to bind here)
+    // Slide 0 (Identity) - Continue as Guest
+    const continueGuestBtn = document.getElementById('continueGuestBtn');
+
+continueGuestBtn?.addEventListener('click', () => {
+  if (continueGuestBtn.disabled) return; // safety guard
+
+  // Preserve original state
+  const originalText = continueGuestBtn.textContent;
+
+  // Loading state
+  continueGuestBtn.disabled = true;
+  continueGuestBtn.textContent = 'Processing...';
+
+  fetch('/checkout/start', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mode: 'guest' })
+  })
+    .then(r => r.json())
+    .then(json => {
+      if (!json.success) {
+        showToast(json.error || 'Could not start checkout');
+        return;
+      }
+
+      if (json.order_number && typeof checkoutState !== 'undefined') {
+        checkoutState.orderNumber = json.order_number;
+      }
+
+      moveToStep(json.next);
+    })
+    .catch(() => {
+      showToast('Network error. Please try again.');
+    })
+    .finally(() => {
+      // Restore button ONLY if navigation did not occur
+      continueGuestBtn.disabled = false;
+      continueGuestBtn.textContent = originalText;
+    });
+});
+
+
+    // Slide 0 - Continue with email
+(() => {
+  const continueEmailBtn = document.getElementById('continueEmailBtn');
+  const emailInput = document.getElementById('checkoutEmail');
+
+  // Functions to show/hide inline error
+  function setEmailError(message) {
+    emailInput.classList.add('is-invalid');
+    const container = emailInput.closest('.col-12');
+    const errorSpan = container?.querySelector('.error-msg');
+    if (errorSpan) {
+      errorSpan.textContent = message;
+      errorSpan.classList.remove('d-none');
+    }
+  }
+
+  function clearEmailError() {
+    emailInput.classList.remove('is-invalid');
+    const container = emailInput.closest('.col-12');
+    const errorSpan = container?.querySelector('.error-msg');
+    if (errorSpan) {
+      errorSpan.classList.add('d-none');
+    }
+  }
+
+  // Clear error while typing
+  emailInput.addEventListener('input', clearEmailError);
+
+  // Handle click on Continue
+  continueEmailBtn.addEventListener('click', () => {
+    if (continueEmailBtn.disabled) return; // click guard
+
+    clearEmailError();
+
+    const email = emailInput.value.trim();
+    if (!email || !emailInput.checkValidity()) {
+      setEmailError('Please enter a valid email address.');
+      return;
+    }
+
+    // Loading state
+    const originalText = continueEmailBtn.textContent;
+    continueEmailBtn.disabled = true;
+    continueEmailBtn.textContent = 'Processing...';
+
+    fetch('/checkout/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'email', email })
+    })
+      .then(r => r.json())
+      .then(json => {
+        if (!json.success) {
+          setEmailError(json.error || 'Unable to continue with this email.');
+          return;
+        }
+
+        // Update checkout state if defined
+        if (json.order_number && typeof checkoutState !== 'undefined') {
+          checkoutState.orderNumber = json.order_number;
+        }
+        if (typeof checkoutState !== 'undefined') {
+          checkoutState.emailExists = json.email_exists;
+        }
+
+        // Move to next step & update UI
+        moveToStep(json.next);
+        if (typeof updateAuthUI === 'function') updateAuthUI();
+      })
+      .catch(() => {
+        setEmailError('Network error. Please try again.');
+      })
+      .finally(() => {
+        continueEmailBtn.disabled = false;
+        continueEmailBtn.textContent = originalText;
+      });
+  });
+})();
+
+
+
+    // Slide 1 - Auth (login or register)
+
+    const authContinueBtn = document.getElementById('authContinueBtn');
+    authContinueBtn?.addEventListener('click', () => {
+      // collect credentials (add ids to your inputs if needed)
+      const emailInput = document.getElementById('checkoutEmail'); // reuse if present
+      const passwordInput = document.querySelector('#authPassword')
+      const email = emailInput?.value?.trim();
+      const password = passwordInput?.value || '';
+      if (!email || !password) return showToast('Email and password required');
+
+      fetch('/checkout/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, action: 'login', password })
+      })
+      .then(r => r.json())
+      .then(json => {
+        if (!json.success) return showToast(json.message || 'Auth failed');
+        // backend decides next
+        moveToStep(json.next);
+      }).catch(err => showToast('Network error'));
+    });
+
+    const authBackBtn = document.getElementById('authBackBtn');
+    authBackBtn?.addEventListener('click', () => moveToStep('identity'));
+
+    const registerBackBtn = document.getElementById('registerBackBtn');
+    registerBackBtn?.addEventListener('click', () => moveToStep('identity'));
+
+
+    //Slide 2: Contact & Fulfillment Logic
+
+// 1. Select Elements
+const contactContinueBtn = document.getElementById('contactContinueBtn');
+const fullNameInput = document.querySelector('input[name="c_fullname"]');
+const emailInput = document.querySelector('input[name="c_email"]');
+const phoneInput = document.querySelector('input[name="c_phone"]');
+const pickupRadio = document.getElementById('pickupOption');
+const deliveryRadio = document.getElementById('deliveryOption');
+const fulfillmentError = document.getElementById('fulfillmentError');
+
+// 2. Error Helpers
+function setFieldError(input, message) {
+    if (!input) return;
+    input.classList.add('is-invalid');
+    const container = input.closest('.col-12');
+    const errorSpan = container ? container.querySelector('.error-msg') : null;
+    if (errorSpan) {
+        errorSpan.textContent = message;
+        errorSpan.classList.remove('d-none');
+    }
+}
+
+function clearFieldError(input) {
+    if (!input) return;
+    input.classList.remove('is-invalid');
+    const container = input.closest('.col-12');
+    const errorSpan = container ? container.querySelector('.error-msg') : null;
+    if (errorSpan) {
+        errorSpan.classList.add('d-none');
+    }
+}
+
+function clearAllErrors() {
+    [fullNameInput, emailInput, phoneInput].forEach(clearFieldError);
+    fulfillmentError?.classList.add('d-none');
+}
+
+// 3. Live Error Clearing (Disappear on type)
+[fullNameInput, emailInput, phoneInput].forEach(input => {
+    input?.addEventListener('input', () => clearFieldError(input));
+});
+
+[pickupRadio, deliveryRadio].forEach(radio => {
+    radio?.addEventListener('change', () => {
+        fulfillmentError?.classList.add('d-none');
+        // If you have help text spans:
+        document.getElementById('pickupHelp')?.classList.toggle('d-none', !pickupRadio.checked);
+        document.getElementById('deliveryHelp')?.classList.toggle('d-none', !deliveryRadio.checked);
+    });
+});
+
+// 4. Validation Logic
+function clientValidate() {
+    let isValid = true;
+    clearAllErrors();
+
+    if (!fullNameInput.value.trim()) {
+        setFieldError(fullNameInput, 'Full name is required.');
+        isValid = false;
+    }
+
+    // Basic email regex check
+    const emailValue = emailInput.value.trim();
+    if (!emailValue || !emailInput.checkValidity()) {
+        setFieldError(emailInput, 'Please enter a valid email address.');
+        isValid = false;
+    }
+
+    if (!phoneInput.value.trim()) {
+        setFieldError(phoneInput, 'Phone number is required.');
+        isValid = false;
+    }
+
+    if (!pickupRadio.checked && !deliveryRadio.checked) {
+        fulfillmentError?.classList.remove('d-none');
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+// 5. Submit Handler
+contactContinueBtn?.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    // STOPS HERE if invalid - Button stays active/normal
+    if (!clientValidate()) return;
+
+    // If valid, start processing
+    const originalText = contactContinueBtn.textContent;
+    contactContinueBtn.disabled = true;
+    contactContinueBtn.textContent = 'Processing...';
+
+    const payload = {
+        full_name: fullNameInput.value.trim(),
+        email: emailInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        fulfillment: pickupRadio.checked ? 'pickup' : 'delivery'
+    };
+
+    try {
+        const res = await fetch('/checkout/fulfillment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const json = await res.json();
+
+        if (json.success) {
+            // Update global state and move
+            if (typeof checkoutState !== 'undefined' && checkoutState) {
+                checkoutState.fulfillment = payload.fulfillment;
+            }
+            moveToStep(json.next);
+        } else {
+            // Handle backend validation errors
+            if (json.errors) {
+                Object.entries(json.errors).forEach(([field, msg]) => {
+                    if (field === 'fullname') setFieldError(fullNameInput, msg);
+                    if (field === 'email') setFieldError(emailInput, msg);
+                    if (field === 'phone') setFieldError(phoneInput, msg);
+                    if (field === 'fulfillment') fulfillmentError.classList.remove('d-none');
+                });
+            } else {
+                showToast(json.error || "Check your details");
+            }
+        }
+    } catch (err) {
+        console.error("Fetch Error:", err);
+        showToast("Network Error. Please try again.");
+    } finally {
+        // ALWAYS reset button state, regardless of success or error
+        contactContinueBtn.disabled = false;
+        contactContinueBtn.textContent = originalText;
+    }
+});
+
+
+
+    document.getElementById('contactBackBtn')?.addEventListener('click', () => moveToStep('identity'));
+
+    // Slide 3 - Shipping
+    document.getElementById('shippingContinueBtn')?.addEventListener('click', () => {
+      const address = document.querySelector('input[name="address"]')?.value?.trim();
+      const city = document.querySelector('input[name="city"]')?.value?.trim();
+      const state = document.querySelector('input[name="state"]')?.value?.trim();
+      const landmark = document.querySelector('input[name="landmark"]')?.value?.trim();
+      if (!address || !city || !state) return showToast('Complete shipping address');
+
+      fetch('/checkout/shipping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address, city, state, landmark })
+      })
+      .then(r => r.json())
+      .then(json => {
+        if (!json.success) return showToast(json.error || 'Could not save shipping');
+        moveToStep(json.next);
+      }).catch(err => showToast('Network error'));
+    });
+
+    document.getElementById('shippingBackBtn')?.addEventListener('click', () => moveToStep('contact'));
+
+    // Slide 4 - Summary & Confirm
+    document.getElementById('summaryBackBtn')?.addEventListener('click', () => {
+      // decide where to go back based on fulfillment
+      moveToStep(checkoutState.fulfillment === 'pickup' ? 'contact' : 'shipping');
+    });
+
+
+
+
+
+
+    // Optionally bind Place Order (confirm)
+    document.getElementById('placeOrderBtn')?.addEventListener('click', () => {
+    const placeOrderBtn = document.getElementById('placeOrderBtn');
+    if (!placeOrderBtn || placeOrderBtn.disabled) return; // click guard
+
+    // Save original text and activate loading state
+    const originalText = placeOrderBtn.textContent;
+    placeOrderBtn.disabled = true;
+    placeOrderBtn.textContent = 'Processing...';
+
+    fetch('/checkout/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            showToast(data.error || 'Payment failed');
+            return;
+        }
+        window.location.href = data.redirect_url;
+    })
+    .catch(() => showToast('Network error'))
+    .finally(() => {
+        // Reset button state in case of error
+        placeOrderBtn.disabled = false;
+        placeOrderBtn.textContent = originalText;
+    });
+});
+
+
+
+  }); // end shown.bs.modal
+
+  checkoutModalEl.addEventListener('hidden.bs.modal', () => {
+    checkoutState = null;
+    if (slider) slider.style.transform = 'translateX(0%)';
+  });
+} else {
+  console.warn('checkoutModal element not found');
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

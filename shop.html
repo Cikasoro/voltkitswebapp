@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    shop
+{% endblock %}
+{% block main %}
+<section class="container py-4">
+
+    <!-- FILTER BAR -->
+    <div class="card mb-4 ">
+        <div class="card-body">
+
+            <div class="row g-3 align-items-end">
+
+                <!-- MAIN CATEGORY -->
+                <div class="col-12 col-lg-4">
+                    <label class="form-label fw-semibold small">
+                        Category
+                    </label>
+                    <div class="btn-group w-100" role="group">
+
+                        <a href="/shop?main=men"
+                           class="btn btn-outline-dark {{ 'active' if main_category and main_category.slug == 'men' }}">
+                            Men
+                        </a>
+
+                        <a href="/shop?main=women"
+                           class="btn btn-outline-dark {{ 'active' if main_category and main_category.slug == 'women' }}">
+                            Women
+                        </a>
+
+                        <a href="/shop?main=kids"
+                           class="btn btn-outline-dark {{ 'active' if main_category and main_category.slug == 'kids' }}">
+                            Kids
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- SUBCATEGORY -->
+                <div class="col-12 col-lg-4">
+                    <label class="form-label fw-semibold small">
+                        Subcategory
+                    </label>
+                    <select class="form-select" id="subcategoryFilter">
+                        <option value="">All subcategories</option>
+                        {% for subcat in available_subcategories %}
+                            <option value="{{ subcat.id }}"
+                                {{ 'selected' if subcat.id == selected_subcategory }}>
+                                {{ subcat.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- PRICE -->
+                <div class="col-12 col-lg-4">
+                    <label class="form-label fw-semibold small">
+                        Price range
+                    </label>
+                    <div class="d-flex gap-2">
+                        <input type="number"
+                               class="form-control"
+                               placeholder="Min"
+                               id="minPrice"
+                               value="{{ min_price or '' }}">
+
+                        <input type="number"
+                               class="form-control"
+                               placeholder="Max"
+                               id="maxPrice"
+                               value="{{ max_price or '' }}">
+
+                        <button class="btn btn-dark" id="applyFilters">
+                            Apply
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SHOP CONTENT -->
+    <div id="shop-content">
+        {% include "partials/shop_content.html" %}
+    </div>
+
+</section>
+<script>
+document.getElementById('applyFilters')?.addEventListener('click', () => {
+    const params = new URLSearchParams(window.location.search);
+
+    const subcat = document.getElementById('subcategoryFilter').value;
+    const min = document.getElementById('minPrice').value;
+    const max = document.getElementById('maxPrice').value;
+
+    if (subcat) params.set('subcategory', subcat);
+    else params.delete('subcategory');
+
+    if (min) params.set('min_price', min);
+    else params.delete('min_price');
+
+    if (max) params.set('max_price', max);
+    else params.delete('max_price');
+
+    fetch('/shop?' + params.toString() + '&partial=1')
+        .then(r => r.text())
+        .then(html => {
+            document.getElementById('shop-content').innerHTML = html;
+            history.pushState({}, '', '/shop?' + params.toString());
+        });
+});
+</script>
+
+
+{% endblock %}

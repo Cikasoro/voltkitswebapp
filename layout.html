@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='icons/favicon.png') }}">
+        <!-- http://getbootstrap.com/docs/5.3/ -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <!-- Bootstrap JS bundle moved to end of body to avoid duplicate-loading issues -->
+
+        <!-- https://favicon.io/emoji-favicons/money-bag/ -->
+        <link href="/static/favicon.ico" rel="icon">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+
+        <link href="/static/styles.css" rel="stylesheet">
+
+        <title>Voltkits - {% block title %}{% endblock %}</title>
+
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+          <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+              <img src="/static/icons/logo.png" alt="Logo" height="32">
+            </a>
+            <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex">
+              <ul class="navbar-nav gap-4">
+
+                <!-- Team wears Drop-down -->
+                <li class="nav-item dropdown position-static">
+                  <a class="nav-link fw-medium" href="#" data-bs-toggle="dropdown">Team wears</a>
+                  <div class="dropdown-menu w-100 mega-menu p-4">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-4">
+                          <h6>Football</h6>
+                          <a class="dropdown-item" href="/products/subcategory/22">Osun united</a>
+                          <a class="dropdown-item" href="/products/subcategory/23">Osun Babes</a>
+
+                        </div>
+                        <div class="col-4">
+                          <h6>Flag Football</h6>
+                          <a class="dropdown-item" href="/products/subcategory/24">AFFL</a>
+                          <a class="dropdown-item" href="/products/subcategory/25">Capital City Alphas</a>
+                          <a class="dropdown-item" href="/products/subcategory/26">Phoenix</a>
+                          <a class="dropdown-item" href="/products/subcategory/27">Hamola FC</a>
+                        </div>
+                        <div class="col-4">
+                          <h6>Basketball</h6>
+                          <a class="dropdown-item" href="/products/subcategory/6"></a>
+                          <a class="dropdown-item" href="/products/subcategory/7"></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Men Dropdown -->
+                <li class="nav-item dropdown position-static">
+                  <a class="nav-link fw-medium" href="#" data-bs-toggle="dropdown">Men</a>
+                  <div class="dropdown-menu w-100 mega-menu p-4">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-4">
+                          <h6>Clothing</h6>
+                          <a class="dropdown-item" href="/products/subcategory/1">Shirts</a>
+                          <a class="dropdown-item" href="/products/subcategory/2">Hoodies</a>
+                          <a class="dropdown-item" href="/products/subcategory/3">Jackets</a>
+                        </div>
+                        <div class="col-4">
+                          <h6>Accessories</h6>
+                          <a class="dropdown-item" href="/products/subcategory/4">Bags</a>
+                          <a class="dropdown-item" href="/products/subcategory/5">Caps</a>
+                        </div>
+                        <div class="col-4">
+                          <h6>Shoes</h6>
+                          <a class="dropdown-item" href="/products/subcategory/6">Sneakers</a>
+                          <a class="dropdown-item" href="/products/subcategory/7">Running Shoes</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <!-- Women Dropdown -->
+                <li class="nav-item dropdown position-static">
+                  <a class="nav-link fw-medium" href="#" data-bs-toggle="dropdown">Women</a>
+                  <div class="dropdown-menu w-100 mega-menu p-4">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-4">
+                          <h6>Clothing</h6>
+                          <a class="dropdown-item" href="/products/subcategory/8">T-Shirts</a>
+                          <a class="dropdown-item" href="/products/subcategory/9">Blouses</a>
+                          <a class="dropdown-item" href="/products/subcategory/10">Tops</a>
+                        </div>
+                        <div class="col-4">
+                          <h6>Accessories</h6>
+                          <a class="dropdown-item" href="/products/subcategory/11">Bags</a>
+                          <a class="dropdown-item" href="/products/subcategory/12">Hats</a>
+                        </div>
+                        <div class="col-4">
+                          <h6>Shoes</h6>
+                          <a class="dropdown-item" href="/products/subcategory/13">Sneakers</a>
+                          <a class="dropdown-item" href="/products/subcategory/14">Heels</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Kids Dropdown -->
+                <li class="nav-item dropdown position-static">
+                  <a class="nav-link fw-medium" href="#" data-bs-toggle="dropdown">Kids</a>
+                  <div class="dropdown-menu w-100 mega-menu p-4">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-4">
+                          <h6>Clothing</h6>
+                          <a class="dropdown-item" href="/products/subcategory/15">T-Shirts</a>
+                          <a class="dropdown-item" href="/products/subcategory/16">Hoodies</a>
+                          <a class="dropdown-item" href="/products/subcategory/17">Jackets</a>
+                        </div>
+                        <div class="col-4">
+                          <h6>Accessories</h6>
+                          <a class="dropdown-item" href="/products/subcategory/18">Caps</a>
+                          <a class="dropdown-item" href="/products/subcategory/19">Hats</a>
+                        </div>
+                        <div class="col-4">
+                          <h6>Shoes</h6>
+                          <a class="dropdown-item" href="/products/subcategory/20">Sneakers</a>
+                          <a class="dropdown-item" href="/products/subcategory/21">Running Shoes</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Simple Links -->
+                <li class="nav-item">
+
+                </li>
+              </ul>
+            </div>
+
+            <!-- Right Side (Profile + Menu Toggle for Mobile) -->
+           <div class="d-none d-lg-flex ms-auto gap-5 align-items-center">
+            <!-- Cart -->
+            <a class="nav-link d-flex align-items-center position-relative" href="/cart">
+                <img src="/static/icons/cart.svg" height="26">
+
+                <span id=""
+                      class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info {% if not cart_count or cart_count == 0 %}d-none{% endif %}">
+                    {{ cart_count or 0}}
+                </span>
+
+            </a>
+
+            <!-- Profile -->
+            <!-- PROFILE DROPDOWN -->
+          <li class="nav-item dropdown list-unstyled">
+
+            {% if g.user%}
+              <a class="nav-link" href="#" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="/static/icons/profile1.svg" height="26" class="profile-icon">
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end p-3 shadow-sm border-1  mt-3 rounded-4"
+                  aria-labelledby="profileDropdown" style="min-width: 240px;">
+
+                <!-- Top user section -->
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <div class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center"
+                      style="width:38px;height:38px;font-weight:600;">
+                    {{ g.user['first_name'][0] }}{{ g.user['last_name'][0] }}
+                  </div>
+                  <div>
+                    <strong>{{ g.user['first_name'] }}</strong><br>
+                    <small class="text-muted">{{ g.user['email'] }}</small>
+                  </div>
+                </div>
+
+                <hr class="dropdown-divider">
+                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/history.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Track My Orders</span>
+                </a>
+
+                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/cart.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>My Wishlist</span>
+                </a>
+
+                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/address.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>My Address</span>
+                </a>
+
+                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/menu.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Account settings</span>
+                </a>
+
+                <hr class="dropdown-divider">
+
+                <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="{{ url_for('logout') }}">
+                    <img src="{{ url_for('static', filename='icons/logout.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Log out</span>
+                </a>
+              </ul>
+
+            {% else %}
+              <a class="nav-link" href="#" id="profileDropdown" data-bs-toggle="dropdown">
+                <img src="/static/icons/profile1.svg" height="26" class="profile-icon">
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end p-3 shadow-sm border-1 mt-3 rounded-4"
+                  aria-labelledby="profileDropdown" style="min-width: 230px;">
+
+                <!-- Login/Signup Buttons -->
+                <div class="d-flex gap-2 mb-2">
+                  <a class="btn btn-outline-dark btn-sm flex-fill" href="{{ url_for('login') }}">Log In</a>
+                  <span text-muted>or</span>
+                  <a class="btn btn-dark btn-sm flex-fill" href="{{ url_for('signup') }}">Sign Up</a>
+                </div>
+
+                <p class="small text-muted text-center mb-2">For a faster Checkout</p>
+
+                <hr class="dropdown-divider">
+                <a class="dropdown-item text-muted d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/history.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Track My Orders</span>
+                </a>
+
+                <a class="dropdown-item text-muted d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/cart.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>My Wishlist</span>
+                </a>
+
+                <a class="dropdown-item text-muted d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/address.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>My Address</span>
+                </a>
+
+                <a class="dropdown-item text-muted d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/menu.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Account settings</span>
+                </a>
+
+              </ul>
+            {% endif %}
+
+          </li>
+
+        </div>
+
+        <!-- RIGHT SIDE: MOBILE (Toggler + Icons) -->
+        <div class="d-flex d-lg-none align-items-center ms-auto gap-4">
+
+            <!-- Cart -->
+            <a class="nav-link d-flex align-items-center position-relative" href="/cart">
+                <img src="/static/icons/cart.svg" height="26">
+
+                <span id=""
+                      class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info {% if not cart_count or cart_count == 0 %}d-none{% endif %}">
+                    {{ cart_count or 0}}
+                </span>
+
+            </a>
+
+            <!-- Profile -->
+           <li class="nav-item dropdown list-unstyled">
+
+            {% if g.user%}
+              <a class="nav-link" href="#" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="/static/icons/profile1.svg" height="26" class="profile-icon  ms-2">
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end p-3 shadow-sm border-1  mt-3 rounded-4"
+                  aria-labelledby="profileDropdown" style="min-width: 240px;">
+
+                <!-- Top user section -->
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <div class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center"
+                      style="width:38px;height:38px;font-weight:600;">
+                    {{ g.user['first_name'][0] }}{{ g.user['last_name'][0] }}
+                  </div>
+                  <div>
+                    <strong>{{ g.user['first_name'] }}</strong><br>
+                    <small class="text-muted">{{ g.user['email'] }}</small>
+                  </div>
+                </div>
+
+                <hr class="dropdown-divider">
+                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/history.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Track My Orders</span>
+                </a>
+
+                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/cart.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>My Wishlist</span>
+                </a>
+
+                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/address.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>My Address</span>
+                </a>
+
+                <a class="dropdown-item d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/menu.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Account settings</span>
+                </a>
+
+                <hr class="dropdown-divider">
+
+                <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="{{ url_for('logout') }}">
+                    <img src="{{ url_for('static', filename='icons/logout.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Log out</span>
+                </a>
+              </ul>
+
+            {% else %}
+              <a class="nav-link" href="#" id="profileDropdown" data-bs-toggle="dropdown">
+                <img src="/static/icons/profile1.svg" height="26" class="profile-icon  ms-2">
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end p-3 shadow-sm border-1 mt-3 rounded-4"
+                  aria-labelledby="profileDropdown" style="min-width: 230px;">
+
+                <!-- Login/Signup Buttons -->
+                <div class="d-flex gap-2 mb-2">
+                  <a class="btn btn-outline-dark btn-sm flex-fill" href="{{ url_for('login') }}">Log In</a>
+                  <span text-muted>or</span>
+                  <a class="btn btn-dark btn-sm flex-fill" href="{{ url_for('signup') }}">Sign Up</a>
+                </div>
+
+                <p class="small text-muted text-center mb-2">For a faster Checkout</p>
+
+                <hr class="dropdown-divider">
+                <a class="dropdown-item text-muted d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/history.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Track My Orders</span>
+                </a>
+
+                <a class="dropdown-item text-muted d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/cart.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>My Wishlist</span>
+                </a>
+
+                <a class="dropdown-item text-muted d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/address.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>My Address</span>
+                </a>
+
+                <a class="dropdown-item text-muted d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                    <img src="{{ url_for('static', filename='icons/menu.svg') }}"
+                        alt="Orders" width="18" height="18">
+                    <span>Account settings</span>
+                </a>
+
+              </ul>
+            {% endif %}
+
+          </li>
+
+             <!-- Mobile Menu Toggler -->
+            <button class="navbar-toggler border-0 shadow-none p-0" type="button"
+                    data-bs-toggle="offcanvas" data-bs-target="#mobileTopMenu">
+                <img src="/static/icons/menu.svg" alt="Menu" height="26">
+            </button>
+
+        </div>
+
+
+
+
+
+            <script>
+              if (window.innerWidth >= 992) {
+                  document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+                      const menu = item.querySelector('.dropdown-menu');
+                      let closeTimer;
+                      item.addEventListener('mouseenter', () => {
+                          clearTimeout(closeTimer);
+                          menu.classList.add('show');
+                      });
+                      item.addEventListener('mouseleave', () => {
+                          closeTimer = setTimeout(() => {
+                              if (!menu.matches(':hover')) {
+                                  menu.classList.remove('show');
+                              }
+                          }, 120);
+                      });
+                      menu.addEventListener('mouseenter', () => {
+                          clearTimeout(closeTimer);
+                          menu.classList.add('show');
+                      });
+                      menu.addEventListener('mouseleave', () => {
+                          menu.classList.remove('show');
+                      });
+                  });
+              }
+            </script>
+
+<script>
+(function () {
+    if (window.CartState) return; // prevent redeclaration
+
+    const CartState = {
+        count: 0,
+
+        init(initialCount) {
+            this.count = Number(initialCount) || 0;
+            this.render();
+        },
+
+        setCount(count) {
+            this.count = Number(count) || 0;
+            this.render();
+        },
+
+        render() {
+            const badges = document.querySelectorAll('.cart-badge');
+
+            if (!badges.length) return;
+
+            badges.forEach(badge => {
+                if (this.count > 0) {
+                    badge.textContent = this.count;
+                    badge.classList.remove('d-none');
+                } else {
+                    badge.classList.add('d-none');
+                }
+            });
+        }
+    };
+
+    window.CartState = CartState;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const serverCount =
+            Number(document.querySelector('.cart-badge')?.textContent) || 0;
+        CartState.init(serverCount);
+    });
+})();
+</script>
+
+
+            </div>
+  </div>
+
+
+
+        </nav>
+        <div class="offcanvas offcanvas-top" id="mobileTopMenu" tabindex="-1">
+          <div class="offcanvas-header position-relative">
+            <!-- Custom Close Button -->
+            <button type="button" class="offcanvas-close-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+              <img src="/static/icons/close.svg" alt="close" height="26">
+            </button>
+          </div>
+
+          <div class="offcanvas-body d-flex flex-column p-3" style="overflow-y:auto; max-height:100vh;">
+
+            <!-- Primary Links -->
+            <ul class="navbar-nav flex-column mb-4">
+              <li class="nav-item"><a class="nav-link fw-bold open-submenu" data-target="#menSubmenu">Men</a></li>
+              <li class="nav-item"><a class="nav-link fw-bold open-submenu" data-target="#womenSubmenu">Women</a></li>
+              <li class="nav-item"><a class="nav-link fw-bold open-submenu" data-target="#kidsSubmenu">Kids</a></li>
+            </ul>
+
+            <!-- Secondary Links -->
+            <ul class="navbar-nav flex-column text-muted">
+              <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
+              <li class="nav-item"><a class="nav-link" href="/refund-policy">Refund Policy</a></li>
+              <li class="nav-item"><a class="nav-link" href="/size-guide">Size Guide</a></li>
+            </ul>
+          </div>
+          <!-- MEN LEVEL 1 -->
+          <div id="menSubmenu" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back>
+                      <img src="/static/icons/back.svg" height="20">
+                  </button>
+
+              </div>
+
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link open-submenu" data-target="#menClothing">Clothing</a></li>
+                  <li><a class="nav-link open-submenu" data-target="#menAccessories">Accessories</a></li>
+                  <li><a class="nav-link open-submenu" data-target="#menShoes">Shoes</a></li>
+              </ul>
+          </div>
+
+          <!-- MEN → CLOTHING (LEVEL 2) -->
+          <div id="menClothing" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back>
+                      <img src="/static/icons/back.svg" height="20">
+                  </button>
+
+              </div>
+
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link" href="/products/subcategory/1">T-Shirts</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/2">Hoodies</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/3">Jackets</a></li>
+              </ul>
+          </div>
+
+        <!-- MEN → ACCESSORIES (LEVEL 2) -->
+          <div id="menAccessories" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back>
+                      <img src="/static/icons/back.svg" height="20">
+                  </button>
+
+              </div>
+
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link" href="/products/subcategory/4">Bags</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/5">Caps</a></li>
+              </ul>
+          </div>
+
+        <!-- MEN → SHOES (LEVEL 2) -->
+          <div id="menShoes" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back>
+                      <img src="/static/icons/back.svg" height="20">
+                  </button>
+
+              </div>
+
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link" href="/products/subcategory/6">Sneakers</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/7">Running Shoes</a></li>
+              </ul>
+          </div>
+
+        <!-- ================= WOMEN ================= -->
+          <div id="womenSubmenu" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back><img src="/static/icons/back.svg" height="20"></button>
+
+              </div>
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link open-submenu" data-target="#womenTops">Clothing</a></li>
+                  <li><a class="nav-link open-submenu" data-target="#womenDresses">Accessories</a></li>
+                  <li><a class="nav-link open-submenu" data-target="#womenShoes">Shoes</a></li>
+              </ul>
+          </div>
+
+          <div id="womenTops" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back><img src="/static/icons/back.svg" height="20"></button>
+
+              </div>
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link" href="/products/subcategory/8">T-Shirts</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/9">Blouses</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/10">Tops</a></li>
+              </ul>
+          </div>
+
+          <div id="womenDresses" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back><img src="/static/icons/back.svg" height="20"></button>
+
+              </div>
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link" href="/products/subcategory/11">Bags</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/12">Hats</a></li>
+              </ul>
+          </div>
+
+          <div id="womenShoes" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back><img src="/static/icons/back.svg" height="20"></button>
+
+              </div>
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link" href="/products/subcategory/13">Sneakers</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/14">Heels</a></li>
+              </ul>
+          </div>
+
+        <!-- ================= KIDS ================= -->
+          <div id="kidsSubmenu" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back><img src="/static/icons/back.svg" height="20"></button>
+
+              </div>
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link open-submenu" data-target="#kidsClothing">Clothing</a></li>
+                  <li><a class="nav-link open-submenu" data-target="#kidsShoes">Shoes</a></li>
+              </ul>
+          </div>
+
+          <div id="kidsClothing" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back><img src="/static/icons/back.svg" height="20"></button>
+
+              </div>
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link" href="/products/subcategory/15">T-Shirts</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/16">Hoodies</a></li>
+              </ul>
+          </div>
+
+          <div id="kidsShoes" class="submenu-panel">
+              <div class="submenu-header">
+                  <button class="submenu-back" data-back><img src="/static/icons/back.svg" height="20"></button>
+
+              </div>
+              <ul class="navbar-nav flex-column">
+                  <li><a class="nav-link" href="/products/subcategory/20">Sneakers</a></li>
+                  <li><a class="nav-link" href="/products/subcategory/21">Sandals</a></li>
+              </ul>
+          </div>
+        </div>
+
+
+      <script>
+        document.querySelectorAll(".open-submenu").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const target = document.querySelector(btn.dataset.target);
+                target.classList.add("active");
+            });
+        });
+
+        document.querySelectorAll("[data-back]").forEach(btn => {
+            btn.addEventListener("click", () => {
+                btn.closest(".submenu-panel").classList.remove("active");
+            });
+        });
+      </script>
+
+        <main>
+            {% block main %}{% endblock %}
+        </main>
+        <!-- Join the Community Section -->
+
+        <section class="bg-dark mt-5 py-5">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-4">
+
+      <!-- Headline + Subtext -->
+      <div class="text-center text-md-start">
+        <h3 class="fw-bold mb-2 text-white">Join the Voltkits Community</h3>
+        <p class="text-light mb-0">
+          Get early access to new products, exclusive content, and many more.
+        </p>
+      </div>
+
+      <!-- CTA Button -->
+      <div>
+        <a href="{{ url_for('signup') }}"
+           class="btn btn-light btn-lg fw-bold px-4 py-2">
+           SIGN UP FOR FREE
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+        <footer class="footer bg-white pt-5 pb-4 border-top">
+    <div class="container">
+        <div class="row gy-4">
+
+            <!-- Logo & About -->
+            <div class="col-12 col-md">
+                <img src="/static/icons/logo.png" alt="Logo" height="40" class="mb-3">
+                <p class="text-muted small">
+                    Kit your dreams.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-12 col-md">
+                <h6 class="fw-bold mb-3 text-dark">Company</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="/about" class="footer-link">About Voltkits</a></li>
+                    <li><a href="/sizeguide" class="footer-link">News</a></li>
+                    <li><a href="/manufacturing" class="footer-link">Careers</a></li>
+                    <li><a href="/affiliate" class="footer-link">Investors</a></li>
+                    <li><a href="/affiliate" class="footer-link">Affiliate marketing</a></li>
+                </ul>
+            </div>
+
+            <div class="col-12 col-md">
+                <h6 class="fw-bold mb-3 text-dark">Terms of Sale</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="/shippingpolicy" class="footer-link">Shipping policy</a></li>
+                    <li><a href="/sizeguide" class="footer-link">Size guide</a></li>
+                    <li><a href="/manufacturing" class="footer-link">Manufacturing</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-12 col-md">
+                <h6 class="fw-bold mb-3 text-dark">Contact</h6>
+                <p class="small mb-1 text-muted"><i class="bi bi-geo-alt me-2"></i> Abuja, Nigeria</p>
+                <p class="small mb-1 text-muted"><i class="bi bi-envelope me-2"></i> support@voltkits.com</p>
+                <p class="small text-muted"><i class="bi bi-telephone me-2"></i> +234 9114 954 939</p>
+
+                <div class="mt-3 d-flex gap-3">
+                    <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="mt-4">
+
+        <div class="text-center small text-muted">
+            © 2025 Voltkits. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="toast text-bg-{{ 'danger' if category == 'error' else category }} border-0 mb-2"
+                 role="alert"
+                 aria-live="assertive"
+                 aria-atomic="true"
+                 data-bs-delay="3000">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                    <button type="button"
+                            class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                </div>
+            </div>
+        {% endfor %}
+    {% endwith %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const toasts = document.querySelectorAll('#toastContainer .toast');
+    toasts.forEach(t => {
+        const toast = new bootstrap.Toast(t);
+        toast.show();
+    });
+});
+</script>
+
+
+    </body>
+
+</html>
