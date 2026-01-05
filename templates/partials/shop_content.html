@@ -1,0 +1,39 @@
+<pre>
+Grouped Products Debug:
+{{ grouped_products | tojson(indent=2) }}
+</pre>
+
+{% if not main_category %}
+    <div class="text-center py-5 text-muted">
+        <h5 class="fw-semibold">
+            Please select a category to view products
+        </h5>
+        <p class="small">
+            Choose Men, Women, or Kids to start browsing.
+        </p>
+    </div>
+
+{% elif grouped_products|length == 0 %}
+    <div class="text-center py-5 text-muted">
+        <h6>No products found</h6>
+    </div>
+
+{% else %}
+    {% for product in group.products %}
+        <section class="mb-5">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-semibold mb-0">
+                    {{ group.subcategory.name }}
+                </h5>
+            </div>
+
+            <div class="row g-4">
+                {% for product in group.products %}
+                    {% include "partials/product_card.html" %}
+                {% endfor %}
+            </div>
+
+        </section>
+    {% endfor %}
+{% endif %}

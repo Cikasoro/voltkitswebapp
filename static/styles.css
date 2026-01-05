@@ -1,0 +1,775 @@
+
+/* Mega menu styling */
+.mega-menu {
+    display: none; /* hide by default */
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    background: #fff;
+    /*box-shadow: 0 4px 12px rgba(0,0,0,0.15);*/
+    padding: 1rem 0;
+}
+
+/* Show on hover for desktop */
+@media (min-width: 992px) {
+    .nav-item.dropdown.position-static:hover .mega-menu {
+        display: block;
+        opacity: 1;
+    }
+}
+
+/* Style headings and items */
+.mega-menu h6 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+
+}
+
+.mega-menu .col-4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* Centers horizontally */
+}
+
+.mega-menu .dropdown-item {
+    padding: 0.25rem 0;
+    color: #333;
+    width: auto;
+
+}
+
+.mega-menu .dropdown-item:hover {
+    color: #0d6efd;
+}
+
+
+@media (min-width: 992px) {
+    .nav-item.dropdown .dropdown-menu {
+        right: 0px !important;  /* push dropdown 10px from right edge */
+        left: auto !important;
+    }
+}
+
+
+
+.dropdown-menu {
+    min-width: 220px;
+    border-radius:0px !important;
+}
+
+.dropdown-item {
+    padding: 0.55rem 0.9rem;
+    font-size: 15px;
+}
+
+.dropdown-item img {
+    opacity: 0.8;
+}
+
+.dropdown-item:hover img {
+    opacity: 1;
+}
+
+
+
+/* Mobile only: spacing between profile icon and menu toggle */
+@media (max-width: 991px) {
+    .navbar .profile-icon {
+        margin-right: 16px;
+    }
+
+    /* Optional: reduce space on larger screens if needed */
+    .navbar-toggler {
+        margin-left: auto;
+    }
+}
+
+/* Full-screen top offcanvas */
+.offcanvas-top {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    transform: translateY(-100%) !important;
+    transition: transform 0.3s ease-in-out !important;
+}
+
+/* Slide DOWN when opening */
+.offcanvas-top.show,
+.offcanvas-top.showing {
+    transform: translateY(0) !important;
+}
+
+/* Slide UP when closing */
+.offcanvas-top.hiding {
+    transform: translateY(-100%) !important;
+}
+
+.offcanvas-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    background: none;
+    border: none;
+    padding: 0;
+
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.offcanvas-close-btn img {
+    width: 22px;
+    height: 22px;
+}
+
+/* Submenu slide system */
+.submenu-panel {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    background: white;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.submenu-panel.active {
+    left: 0;
+}
+
+.submenu-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.submenu-back {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+
+/* Navbar toggler focus removal */
+.navbar-toggler:focus {
+    box-shadow: none !important;
+}
+
+/* Link spacing */
+.navbar-nav li + li {
+    margin-top: auto;
+}
+
+
+
+.navbar-toggler img {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.navbar-toggler:hover img {
+    transform: scale(1.1);
+}
+
+
+.custom-toggler {
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-toggler:focus,
+.custom-toggler:active,
+.custom-toggler:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.custom-toggler img {
+    transition: transform .2s ease, opacity .2s ease;
+}
+
+/* Custom modal close button (used in both modals) */
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1051; /* above modal-content */
+}
+.modal-close-btn img {
+  display: block;
+  height: 20px;
+  width: 20px;
+  opacity: 0.9;
+  transition: transform .12s ease, opacity .12s ease;
+}
+.modal-close-btn:hover img { transform: scale(1.08); opacity: 1; }
+
+/* Optional: slightly tighter modal content */
+.modal-content { overflow: visible; }
+
+.modal .btn-primary {
+  background-color: #ff7a00;   /* orange */
+  border-color: #ff7a00;
+}
+
+.modal .btn-primary:hover {
+  background-color: #e86d00;
+  border-color: #e86d00;
+}
+
+
+.modal a {
+  text-decoration: none;
+}
+
+.modal a:hover {
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.back-btn {
+    text-decoration: none !important;
+    color: #000 !important;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.back-btn span {
+    color: #000 !important;
+    font-weight: 600;
+}
+
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    margin-top: auto; /* pushes footer to bottom */
+}
+
+/* Hero Section */
+/* Ensure the parent section is a positioning context */
+.hero {
+    position: relative;
+    /* vh-100 is good for full viewport height */
+}
+
+/* Base style for all slides to cover the area */
+.hero-slide-1,
+.hero-slide-2,
+.hero-slide-3 {
+    background-size: cover; /* Important: Ensures image covers the div */
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Optional: Add a dark overlay for better text readability */
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.4);
+}
+
+/* Specific background images for each slide */
+.hero-slide-1 {
+    /* **Replace 'url(...)' with your actual image path** */
+    background-image: url('/static/hero1.webp');
+}
+
+.hero-slide-2 {
+    background-image: url('/static/hero2.webp');
+}
+
+.hero-slide-3 {
+    background-image: url('/static/hero3.webp');
+}
+
+/* Styling the Caption/Content for better visibility *
+
+/* --- 1. Define the Animation Keyframes --- */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        /* Start 20 pixels below its final position */
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- 2. Apply the Animation to the Caption --- */
+.animate-caption {
+    animation-duration: 2s; /* How long the animation takes */
+    animation-timing-function: ease-out; /* Smooth deceleration */
+    animation-fill-mode: both; /* Keeps the final state after animation ends */
+    animation-name: slideInUp; /* Applies the defined animation */
+    /* Optional: Delay the animation so the images load first */
+    animation-delay: 1s;
+}
+
+/* --- Section Layout --- */
+.trending-section {
+  padding: 20px 0 40px 20px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #fff;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 20px;
+  margin-bottom: 40px;
+}
+
+.section-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* --- Navigation Buttons (Desktop) --- */
+.scroll-nav-buttons {
+  display: flex;
+  gap: 10px; /* Space between the two buttons */
+}
+
+.scroll-nav-buttons button {
+  background-color: #fff;
+  border: 0px solid #000;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.scroll-nav-buttons button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* --- Scroll Container --- */
+.product-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth; /* Essential for smooth JS scrolling */
+  scroll-snap-type: x mandatory;
+  gap: 15px;
+  padding-bottom: 20px;
+
+  /* Hide Scrollbars */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.product-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Product Card --- */
+.product-card {
+  flex: 0 0 auto;
+  width: 280px;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+
+.card-image-wrapper {
+  position: relative;
+  background-color: #f5f5f5;
+  margin-bottom: 10px;
+}
+
+/* desktop default (applies to the img inside card-image-wrapper and images with .product-img) */
+.card-image-wrapper img,
+.product-img {
+  width: 100%;
+  height: 300px;           /* desktop height */
+  object-fit: cover;       /* crop to fill without stretching */
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* tablet and below */
+@media (max-width: 992px) {
+  .card-image-wrapper img,
+  .product-img {
+    height: 200px;         /* tablet */
+    object-fit: cover;
+  }
+}
+
+/* mobile: ≤576px */
+@media (max-width: 576px) {
+  .card-image-wrapper img,
+  .product-img {
+    height: 150px;
+    object-fit: cover;
+  }
+}
+
+
+
+.product-card:hover .card-image-wrapper img {
+  transform: scale(1.05);
+}
+
+.price-tag {
+  position: absolute;
+  bottom: 10px; left: 10px;
+  background-color: #fff;
+  padding: 2px 5px;
+  font-size: 14px; font-weight: 700;
+}
+
+.card-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-name { font-weight: 400; color: #000; }
+.product-category { font-size: 14px; color: #767677; }
+
+
+/* --- RESPONSIVE: HIDE BUTTONS ON MOBILE --- */
+@media (max-width: 768px) {
+  /* Hide the buttons completely on screens smaller than 768px */
+  .scroll-nav-buttons {
+    display: none;
+  }
+
+  .trending-section { padding-left: 15px; }
+  .product-card { width: 160px; }
+  .product-scroll-container { gap: 10px; }
+}
+
+
+
+.category-section {
+  padding: 40px 20px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #fff;
+}
+
+/* Header Styling */
+.cat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.cat-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0;
+  color: #000;
+}
+
+/* Desktop "View All" Link */
+.cat-view-all {
+  font-size: 14px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-bottom: 1px solid #000;
+}
+
+/* Container: Flexbox grid */
+.category-container {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Card Styling */
+.category-card {
+  /* Desktop: Share width equally (33% each) */
+  flex: 1;
+  text-decoration: none;
+  color: black;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Image Wrapper */
+.cat-image-wrapper {
+  width: 100%;
+  height: 400px; /* Fixed height for uniform look */
+  overflow: hidden;
+  background-color: #f5f5f5;
+  margin-bottom: 10px;
+}
+
+.cat-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image fills box without distortion */
+  transition: transform 0.4s ease;
+}
+
+/* Hover Effect */
+.category-card:hover .cat-image-wrapper img {
+  transform: scale(1.05);
+}
+
+/* Text Label */
+.cat-label {
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* HIDE the 4th card on Desktop */
+.mobile-only {
+  display: none;
+}
+
+
+
+@media (max-width: 768px) {
+
+  /* Reset padding so content hits the edge of screen */
+  .category-section {
+    padding-right: 0;
+  }
+
+  /* Hide "View All" button */
+  .cat-view-all {
+    display: none;
+  }
+
+  /* SHOW the 4th "Sports" card */
+  .mobile-only {
+    display: block;
+  }
+
+  /* Switch Container to Horizontal Scroll */
+  .category-container {
+    overflow-x: auto; /* Enable scroll */
+    scroll-snap-type: x mandatory; /* Enable snapping */
+    padding-right: 20px; /* Add space at end of scroll */
+    padding-bottom: 10px; /* Space for touch interaction */
+
+    /* Hide scrollbars */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .category-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Switch Cards to Carousel Items */
+  .category-card {
+    flex: none; /* Disable the "share equally" logic */
+    width: 85%; /* Card takes 85% of screen width */
+    scroll-snap-align: start; /* Snaps to left edge */
+  }
+
+  /* Adjust image height for smaller screens */
+  .cat-image-wrapper {
+    height: 300px;
+  }
+}
+
+
+
+.thumb-image {
+    object-fit: cover;
+}
+.thumb-image:hover {
+
+}
+.size-btn.active {
+    background-color: #343a40;
+    color: #fff;
+}
+.main-image img {
+    width:100%;
+    object-fit: cover;
+    max-height: 400px; /* desktop */
+}
+
+@media (max-width: 576px) {
+    .main-image img {
+        max-height: 250px; /* smaller on mobile */
+    }
+}
+
+.full-width-div {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+
+/* 1. Automatically Respond to Image Size (Remove empty space) */
+.main-image-wrapper {
+    /* Remove height constraints. The container's height is now defined by the image inside it. */
+    max-height: none;
+    height: auto;
+    width: 100%; /* Ensure it spans the full width of the column */
+    overflow: hidden;
+}
+
+/* Ensure the main image uses 100% of the wrapper's space (which is now based on aspect ratio) */
+.product-detail-main-img {
+    height: auto;
+    width: 100%;
+    /* Keep object-fit: contain to show the whole image */
+    object-fit: contain;
+}
+
+#mainProductImage {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+    transform: scale(1);
+}
+#mainProductImage.loading {
+    opacity: 0.3; /* Dim while loading */
+    transform: scale(0.98);
+}
+
+
+/* 2. & 3. Align Thumbnails Centered and Distributed Evenly */
+
+/* This targets the <div> containing the thumbnails */
+.thumbnail-gallery {
+    /* Ensures the container takes up the full width available */
+    width: 100%;
+
+    /* Center the thumbnails within the full width */
+    justify-content: center;
+
+    /* Distribute space evenly between the thumbnails */
+    display: flex;
+    gap: 10px; /* Adjust gap as needed */
+
+    /* Added to align the thumbnails perfectly under the main image,
+       assuming the main image doesn't have extra padding that throws off alignment. */
+    padding: 0 5px; /* Adjust padding to visually align with the main image border */
+}
+
+/* Style the individual thumbnail images */
+.thumbnail-gallery .thumb-image {
+    /* We are removing the inline 'width: 80px;' and replacing it with flex-grow */
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto; /* Let flexbox handle the width calculation */
+
+    /* Keeping the fixed height */
+    height: 100px;
+
+    /* Important: This ensures the images share the available width equally */
+    width: 0;
+
+    object-fit: cover;
+}
+
+
+/* Remove the conflicting mobile width you had */
+@media (max-width: 768px) {
+    .main-image-wrapper {
+        /* Reset any conflicting mobile styles */
+        max-height: none;
+        width: 100%; /* Ensure 100% on mobile */
+    }
+}
+
+
+.checkout-slide {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+#checkoutModal .modal-dialog {
+    /* Set initial position off-screen below */
+    transform: translate(0, 100vh);
+    transition: transform .3s ease-out; /* Custom transition speed */
+}
+
+/* Override Bootstrap's 'fade' class default animation */
+#checkoutModal.fade .modal-dialog {
+    transform: translate(0, 100vh);
+}
+
+/* When the modal is visible, slide it up to its center position */
+#checkoutModal.show .modal-dialog {
+    /* Bootstrap's default center position for the dialog */
+    transform: translate(0, 0);
+}
+
+/* Optional: Improve look on small screens */
+@media (max-width: 576px) {
+    #checkoutModal.show .modal-dialog {
+        /* On small screens, make it stick to the top edge if you prefer a full-screen mobile look */
+        transform: translate(0, 0);
+    }
+}
+
+
+
+
+
+.footer-link {
+    color: #4f4f4f;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: #000;
+}
+
+.social-link {
+    font-size: 1.25rem;
+    color: #6c6c6c;
+    transition: 0.3s;
+}
+
+.social-link:hover {
+    color: #000;
+}
+
+.footer p,
+.footer small {
+    color: #6c6c6c !important;
+}
+
+
+
